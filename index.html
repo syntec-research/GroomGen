@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Litface">
+  <meta name="keywords" content="Litface">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GroomGen: A High-Quality Generative Hair Model Using Hierarchical Latent Representations</title>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="./static/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src=".static/js/jquery.min.js"></script> <!--https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js-->
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<style>
+  .rotate_image {
+      -webkit-transform: rotate(270deg);
+      -moz-transform: rotate(270deg);
+      -ms-transform: rotate(270deg);
+      -o-transform: rotate(270deg);
+      transform: rotate(270deg);
+      margin: 100px 0 50px 0;
+  }
+</style>
+
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">GroomGen:<br>A High-Quality Generative Hair Model Using Hierarchical Latent Representations</h1>
+		  <div class="is-size-5 publication-authors">
+		    <span class="author-block"><a href="https://calciferzh.github.io/" target="_blank">Yuxiao Zhou</a><sup>1</sup>,</span>
+		    <span class="author-block"><a href="https://mlchai.com/" target="_blank">Menglei Chai</a><sup>2</sup>,</span>
+		    <span class="author-block"><a href="https://www.alessandropepe.com/" target="_blank">Alessandro Pepe</a><sup>2</sup>,</span>
+		    <span class="author-block"><a href="https://inf.ethz.ch/people/person-detail.mgross.html" target="_blank">Markus Gross</a><sup>1</sup>,</span>
+		    <span class="author-block"><a href="https://thabobeeler.com/" target="_blank">Thabo Beeler</a><sup>2</sup></span>
+		    <div class="is-size-5 publication-authors">
+		      <span class="author-block"><sup>1</sup>ETH Zurich,</span>
+		      <span class="author-block"><sup>2</sup>Google</span>
+		    </div>
+			<hr style="height:10pt; visibility:hidden; margin:0; border:0;" />
+		    <div class="is-size-5 publication-authors">
+		      <span class="author-block">SIGGRAPH Asia 2023 (ACM Transactions on Graphics)</span>
+		    </div>
+			<hr style="height:10pt; visibility:hidden; margin:0; border:0;" />
+		    <div class="is-size-5 publication-authors">
+		      <span class="author-block">POC: mengleichai@ tbeeler@</span>
+		    </div>
+		    <div class="publication-links">
+		    <span class="link-block">
+		      <a href="./static/paper/GroomGen.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+		        <span>Paper</span>
+		      </a>
+		    </span>
+		    <span class="link-block">
+		      <a href="https://arxiv.org/abs/2311.02062" target="_blank" class="external-link button is-normal is-rounded is-dark">
+		        <span>ArXiv</span>
+		      </a>
+		    </span>
+		    <span class="link-block">
+		      <a href="https://syntec-research.github.io/groomgen/" target="_blank_" class="external-link button is-normal is-rounded is-dark">
+		        <span>Public Website</span>
+		      </a>
+		    </span>
+		    <span class="link-block">
+		      <a href="http://go/groomgen" target="_blank" class="external-link button is-normal is-rounded is-dark">
+		        <span>Internal Website</span>
+		      </a>
+		    </span>
+		  </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="column is-centered has-text-centered">
+    <div class="container">
+      <div class="rows">
+        <div class="row">
+          <div class="item">
+            <video poster="" id="light_swipe_horizontal" autoplay controls muted loop playsinline  width="75%">
+              <source src="./static/videos/GroomGen.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr style="width:30%; margin: auto;" />
+
+<section class="section">
+	<div class="container is-max-desktop">
+		<div class="columns is-centered has-text-centered">
+			<div class="column is-four-fifths">
+				<h2 class="title is-3">Abstract</h2>
+				<div class="content has-text-justified">
+					Despite recent successes in hair acquisition that fits a high-dimensional hair model to a specific input subject, generative hair models, which establish general embedding spaces for encoding, editing, and sampling diverse hairstyles, are way less explored. In this paper, we present <i>GroomGen</i>, the first generative model designed for hair geometry composed of highly-detailed dense strands. Our approach is motivated by two key ideas. First, we construct hair latent spaces covering both individual strands and hairstyles. The latent spaces are compact, expressive, and well-constrained for high-quality and diverse sampling. Second, we adopt a hierarchical hair representation that parameterizes a complete hair model to three levels: single strands, sparse guide hairs, and complete dense hairs. This representation is critical to the compactness of latent spaces, the robustness of training, and the efficiency of inference. Based on this hierarchical latent representation, our proposed pipeline consists of a strand-VAE and a hairstyle-VAE that encode an individual strand and a set of guide hairs to their respective latent spaces, a hybrid densification step that populates sparse guide hairs to a dense hair model, and a neural simulator that deforms hair driven by head pose. <i>GroomGen</i> not only enables novel hairstyle sampling and plausible hairstyle interpolation, but could also enable interactive editing of complex hairstyles, or serve as strong data-driven prior for hairstyle reconstruction from images. We demonstrate the superiority of our approach with qualitative examples of diverse sampled hairstyles and quantitative evaluation of generation quality regarding every single component and the entire pipeline.
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<hr style="width:30%; margin: auto;" />
+
+<section class="section">
+	<div class="container is-max-desktop">
+		<div class="column is-centered has-text-centered">
+			<div class="content">
+				<h2 class="title is-3">Diverse Hairstyle Generation</h2>
+			</div>
+		</div>
+	</div>
+</section>
+<div class="column is-centered has-text-centered">
+	<div class="container">
+		<div class="rows">
+			<div class="row">
+				<div class="item">
+					<img src="./static/images/teaser.jpg" width="75%">
+				</div>
+				<div class="content">
+					<h3 class="has-text-centered">Dense strands generation results</h3>
+				</div>
+			</div> 
+			<div class="row">
+				<div class="item">
+					<img src="./static/images/hae_random_generation.jpg" width="75%">
+				</div>
+				<div class="content">
+					<h3 class="has-text-centered">Sparse guide hairs generation results</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<hr style="width:30%; margin: auto;" />
+
+<section class="section">
+	<div class="container is-max-desktop">
+		<div class="column is-centered has-text-centered">
+			<div class="content">
+				<h2 class="title is-3">Pipeline and Scalp Parameterization</h2>
+			</div>
+		</div>
+	</div>
+</section>
+<div class="column is-centered has-text-centered">
+	<div class="container">
+		<div class="columns">
+			<div class="column">
+				<div class="item">
+					<img src="./static/images/pipeline.png" width="100%">
+				</div>
+			</div> 
+		</div>
+	</div>
+</div>
+
+<hr style="width:30%; margin: auto;" />
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="column is-centered has-text-centered">
+      <div class="content">
+        <h3 class="title is-3">Evalutaion of Strand-VAE and Hairstyle-VAE</h3>
+    </div>
+    </div>
+  </div>
+</section>
+<div class="column is-centered has-text-centered">
+	<div class="container">
+		<div class="columns">
+			<div class="column">
+				<div class="item">
+					<img src="./static/images/sae_test_set.jpg" width="100%">
+				</div>
+				<div class="content">
+					<h3 class="has-text-centered">Reconstruction results of strand-VAE</h3>
+				</div>
+			</div> 
+			<div class="column">
+				<div class="item">
+					<img src="./static/images/hae_test_set.jpg" width="100%">
+				</div>
+				<div class="content">
+					<h3 class="has-text-centered">Reconstruction results of hairstyle-VAE</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<hr style="width:30%; margin: auto;" />
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="column is-centered has-text-centered">
+      <div class="content">
+        <h3 class="title is-3">Evalutaion of Densification</h3>
+    </div>
+    </div>
+  </div>
+</section>
+<div class="column is-centered has-text-centered">
+	<div class="container">
+		<div class="rows">
+			<div class="row">
+				<div class="item">
+					<img src="./static/images/nhd_refinement.jpg" width="75%">
+					<img src="./static/images/nhd_refinement_more.jpg" width="75%">
+				</div>
+				<div class="content">
+					<h3 class="has-text-centered">Controllable refinement</h3>
+				</div>
+			</div> 
+			<div class="row">
+				<div class="item">
+					<img src="./static/images/nhd_neural.jpg" width="75%">
+				</div>
+				<div class="content">
+					<h3 class="has-text-centered">Comparisons of upsamplers</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<hr style="width:30%; margin: auto;" />
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="column is-centered has-text-centered">
+      <div class="content">
+        <h3 class="title is-3">Evalutaion of Densification</h3>
+    </div>
+    </div>
+  </div>
+</section>
+<div class="column is-centered has-text-centered">
+	<div class="container">
+		<div class="rows">
+			<div class="row">
+				<div class="item">
+					<img src="./static/images/nhd_refinement.jpg" width="75%">
+					<img src="./static/images/nhd_refinement_more.jpg" width="75%">
+				</div>
+				<div class="content">
+					<h3 class="has-text-centered">Controllable refinement</h3>
+				</div>
+			</div> 
+			<div class="row">
+				<div class="item">
+					<img src="./static/images/nhd_neural.jpg" width="75%">
+				</div>
+				<div class="content">
+					<h3 class="has-text-centered">Comparisons of upsamplers</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<hr style="width:30%; margin: auto;" />
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="column is-centered has-text-centered">
+      <div class="content">
+        <h3 class="title is-3">Latent Space Exploration</h3>
+    </div>
+    </div>
+  </div>
+</section>
+<div class="column is-centered has-text-centered">
+	<div class="container">
+		<div class="rows">
+			<div class="row">
+				<div class="item">
+					<img src="./static/images/hae_interp.jpg" width="75%">
+				</div>
+				<div class="content">
+					<h3 class="has-text-centered">Hairstyle interpolation</h3>
+				</div>
+			</div> 
+			<div class="row">
+				<div class="item">
+					<img src="./static/images/hae_arithmetic.jpg" width="60%">
+				</div>
+				<div class="content">
+					<h3 class="has-text-centered">Hairstyle arithmetics</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<hr style="width:30%; margin: auto;" />
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="column is-centered has-text-centered">
+      <div class="content">
+        <h3 class="title is-3">Neural Simulation</h3>
+    </div>
+    </div>
+  </div>
+</section>
+<div class="column is-centered has-text-centered">
+	<div class="container">
+		<div class="rows">
+			<div class="row">
+				<div class="item">
+					<img src="./static/images/nss_results.jpg" width="50%">
+				</div>
+			</div> 
+		</div>
+	</div>
+</div>
+
+
+<script>
+    // Add custom js here.
+</script>
+
+
+</body>
+</html>
